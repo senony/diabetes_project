@@ -1,0 +1,5 @@
+# Android
+.idea/
+.gradle/
+local.properties
+google-services.json
