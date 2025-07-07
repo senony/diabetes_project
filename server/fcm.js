@@ -29,6 +29,7 @@ export const sendPush = async (glucose, targetToken) => {
         data: {
             title: '📢 할아버지 혈당 수치',
             body: `현재 혈당: ${glucose}`,
+            glucose: glucose.toString()
         },
         android: {
             priority: 'high',
