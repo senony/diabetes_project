@@ -16,6 +16,7 @@ local.properties
 
 # Firebase service account key (절대 포함 금지!)
 service-account.json
+google-services.json
 
 # Firebase 설정 파일 (개인 인증 정보 포함될 수 있음)
 firebase-debug.log
