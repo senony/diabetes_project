@@ -62,11 +62,12 @@ dependencies {
     implementation(platform(libs.firebase.bom))
 
 
-    // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.database)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth.ktx)
 
 
     // Add the dependencies for any other desired Firebase products
