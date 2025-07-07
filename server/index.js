@@ -1,9 +1,26 @@
 // index.js
 import express from 'express';
 import { sendPush } from './fcm.js';
+import admin from 'firebase-admin';
+import fs from 'fs';
+
+// 🔐 service-account.json 직접 읽어서 파싱
+const serviceAccount = JSON.parse(
+    fs.readFileSync('./service-account.json', 'utf8')
+);
 
 const app = express();
 app.use(express.json());
+
+// Firebase admin 초기화
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
+}
+
+const db = admin.firestore();
+
 
 // 서버 상태 확인용 GET
 app.get('/', (_, res) => {
@@ -23,7 +40,15 @@ app.post('/send', async (req, res) => {
     }
 
     try {
+        // 1. FCM 푸시 전송
         await sendPush(glucose, token);
+
+        // 2. Firestore에 혈당 수치 저장
+        await db.collection('glucoseLogs').add({
+            value: glucose,
+            timestamp: admin.firestore.FieldValue.serverTimestamp()
+        });
+
         console.log(`✅ 푸시 전송 요청 수신: 혈당 ${glucose}, 토큰 일부: ${token.slice(0, 10)}...`);
         res.status(200).json({ message: 'Push notification sent successfully' });
     } catch (err) {
